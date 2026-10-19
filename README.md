@@ -21,7 +21,7 @@
 
 ## 📌 Contents
 
-[Why this project](#-why-this-project) · [Highlights](#-highlights) · [How it works](#-how-it-works) · [App tour](#%EF%B8%8F-app-tour) · [Results](#-results) · [Decision engine](#-decision-engine) · [Explainability](#-explainability) · [BigQuery pipeline](#%EF%B8%8F-bigquery-pipeline) · [Run it yourself](#%EF%B8%8F-run-it-yourself) · [Structure](#-project-structure) · [Limitations](#%EF%B8%8F-limitations--honest-notes) · [Tech stack](#%EF%B8%8F-tech-stack)
+[Why this project](#-why-this-project) · [Highlights](#-highlights) · [How it works](#-how-it-works) · [App tour](#%EF%B8%8F-app-tour) · [Results](#-results) · [Decision engine](#-decision-engine) · [Explainability](#-explainability) · [BigQuery pipeline](#%EF%B8%8F-bigquery-pipeline) · [Run it yourself](#%EF%B8%8F-run-it-yourself) · [Structure](#-project-structure) · [Tech stack](#%EF%B8%8F-tech-stack)
 
 ---
 
@@ -71,7 +71,7 @@ flowchart LR
 
 ## 🖥️ App tour
 
-<details>
+
 <summary><b>🔮 1. Predict</b> — score one order, get a reason and a decision</summary>
 
 <br>
@@ -82,52 +82,35 @@ Fill in an order (price, discount, delivery days, payment method…) and get:
 - a **business decision**: expected loss vs cost of acting
 - **"Why this prediction?"**: the top 3 factors, in plain English
 
-</details>
-
-<details>
 <summary><b>📁 2. Batch Prediction</b> — upload a CSV of orders</summary>
 
 <br>
 
 Upload orders, get every row scored with risk tier and decision, plus summary totals (orders scored, worth intervening on, total potential savings). Download the scored file.
 
-</details>
-
-<details>
 <summary><b>📊 3. EDA Dashboard</b> — explore the return patterns</summary>
 
 <br>
 
 Return-reason donut, KPI row, an interactive "explore return rate by…" selector, a category treemap, a payment-flow sunburst and a correlation heatmap.
 
-</details>
-
-<details>
 <summary><b>🎚️ 4. What-If Explorer</b> — drag sliders, watch the risk move</summary>
 
 <br>
 
 Sliders for discount, delivery days, price and seller rating. The risk gauge and the recommendation update instantly.
 
-</details>
-
-<details>
 <summary><b>🗺️ 5. Returns Map</b> — return rate by city</summary>
 
 <br>
 
 An interactive map of 18 Indian cities, sized by order volume and coloured by return rate.
 
-</details>
-
-<details>
 <summary><b>☁️ 6. BigQuery Pipeline</b> — how the data flows through the warehouse</summary>
 
 <br>
 
 Shows each warehouse layer and what happens in it, from the raw CSV to the model's predictions.
-
-</details>
 
 ---
 
@@ -139,7 +122,6 @@ Five models, evaluated with 5-fold cross-validation repeated twice (10 folds).
 
 ![Model comparison](assets/model_comparison.png)
 
-<details>
 <summary><b>See the full table and significance tests</b></summary>
 
 <br>
@@ -158,8 +140,6 @@ Gradient Boosting vs every other model: **p < 0.05** (Nadeau–Bengio corrected 
 Hyperparameter tuning (randomized search) improved the held-out score only slightly, 0.617 → 0.620, so the limit comes from the information in the data, not from the model settings.
 
 Full tables: [`research_results/RESULTS.md`](research_results/RESULTS.md)
-
-</details>
 
 ### What drives returns? (ablation study)
 
@@ -198,7 +178,6 @@ act only if   expected_loss − ₹800 intervention cost  >  0
 
 Each prediction comes with its top reasons. The method is **feature perturbation**: swap each feature for the dataset median and measure how far the predicted probability moves.
 
-<details>
 <summary><b>Example output</b></summary>
 
 <br>
@@ -209,16 +188,11 @@ Each prediction comes with its top reasons. The method is **feature perturbation
 | Warranty availability | 🟢 −0.081 (pulls risk down) |
 | Payment method | 🟢 −0.092 (pulls risk down) |
 
-</details>
-
-<details>
 <summary><b>Why not SHAP?</b></summary>
 
 <br>
 
 SHAP depends on `numba`, whose DLLs were blocked by Windows Application Control on the development machine. A simpler perturbation explainer ([`explain.py`](explain.py)) replaced it.
-
-</details>
 
 ---
 
@@ -231,7 +205,6 @@ SHAP depends on `numba`, whose DLLs were blocked by Windows Application Control 
 | **mart** | `fact_orders`, `dim_product`, `dim_date` | Star schema ready for analysis |
 | **mart** | `fact_predictions` | Return probability and risk tier per order (`predict.py`) |
 
-<details>
 <summary><b>Run the pipeline</b></summary>
 
 <br>
@@ -243,8 +216,6 @@ python predict.py              # scores orders → mart.fact_predictions
 ```
 
 Needs a Google Cloud project and a service-account key. Never commit the key to Git (`.gitignore` already blocks `*.json`).
-
-</details>
 
 ---
 
@@ -263,15 +234,11 @@ The trained model is included, so the app starts immediately. To retrain and re-
 python train_model.py            # train 5 models, save the best
 python research_evaluation.py    # CV, significance tests, ablation, tuning
 ```
-
-<details>
 <summary><b>Deploy on Streamlit Cloud</b></summary>
 
 <br>
 
 See [`DEPLOY_SETUP.md`](DEPLOY_SETUP.md).
-
-</details>
 
 ---
 
@@ -294,7 +261,7 @@ See [`DEPLOY_SETUP.md`](DEPLOY_SETUP.md).
 
 ---
 
-## ⚠️ Limitations & honest notes
+## Honest notes
 
 - **Modest predictive power.** ROC-AUC ≈ 0.62: returns are only weakly predictable from these features. The project's value is in the explanations, the decisions and the pipeline, not a headline accuracy.
 - **Savings are estimates.** The ₹80 lakh figure depends on assumed costs (₹800 / ₹150 / 15%), not measured outcomes.
@@ -310,15 +277,19 @@ Python · pandas · NumPy · scikit-learn · XGBoost · SciPy · Plotly · Strea
 
 ---
 
-## 📬 Contact
+
+## 👨‍💻 Author
+
+<div align="center">
 
 **Arushi Garg**
 
-[![Email](https://img.shields.io/badge/Email-arushigarg525%40gmail.com-d14836?logo=gmail&logoColor=white)](mailto:arushigarg525@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Shinearushi525-181717?logo=github&logoColor=white)](https://github.com/Shinearushi525)
-[![Live App](https://img.shields.io/badge/Live%20App-return--risk--ai.streamlit.app-ff4b4b?logo=streamlit&logoColor=white)](https://return-risk-ai.streamlit.app/)
 
-<div align="center">
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Arushi%20Garg-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/arushi-garg525/)
+[![GitHub](https://img.shields.io/badge/GitHub-Shinearushi525-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Shinearushi525)
+[![Email](https://img.shields.io/badge/Email-arushigarg525@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:Arushigarg525@gmail.com)
+
+
 
 If this project helped you, consider giving it a ⭐
 
