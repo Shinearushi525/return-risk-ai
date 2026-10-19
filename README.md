@@ -120,7 +120,7 @@ Shows each warehouse layer and what happens in it, from the raw CSV to the model
 
 Five models, evaluated with 5-fold cross-validation repeated twice (10 folds).
 
-![Model comparison](assets/model_comparison.png)
+![Model comparison](model_comparison.png)
 
 <summary><b>See the full table and significance tests</b></summary>
 
@@ -145,13 +145,13 @@ Full tables: [`research_results/RESULTS.md`](research_results/RESULTS.md)
 
 Remove one group of features at a time and see how much the model suffers.
 
-![Ablation](assets/ablation.png)
+![Ablation](ablation.png)
 
 **Takeaway:** logistics (delivery, shipping, payment) and customer features carry the most signal. The festival-season flag adds almost nothing.
 
 ### Discounts and returns
 
-![Discount vs returns](assets/discount_returns.png)
+![Discount vs returns](discount_returns.png)
 
 Orders with 0–10% discount earn the most expected profit per order (₹9,320); orders with 50%+ discount are returned 46.9% of the time versus 33.3%.
 
