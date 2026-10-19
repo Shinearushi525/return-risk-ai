@@ -139,8 +139,6 @@ Gradient Boosting vs every other model: **p < 0.05** (Nadeau–Bengio corrected 
 
 Hyperparameter tuning (randomized search) improved the held-out score only slightly, 0.617 → 0.620, so the limit comes from the information in the data, not from the model settings.
 
-Full tables: [`research_results/RESULTS.md`](research_results/RESULTS.md)
-
 ### What drives returns? (ablation study)
 
 Remove one group of features at a time and see how much the model suffers.
